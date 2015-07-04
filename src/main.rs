@@ -160,7 +160,7 @@ fn print_help(category: &str) {
             println!("  help      Print this help.");
             println!("  generate  Generate a Mandelbrot set and save it to an image.");
             println!("  draw      Launch the interactive drawer.");
-            println!("------------------------------------------\nType `help [command]` to get more specific help about a command.");
+            println!("---------------------\nType `help [command]` to get more specific help about a command.");
         }
     }
 }
