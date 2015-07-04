@@ -98,6 +98,53 @@ struct Plan {
     height: f64,
 }
 
+impl Plan {
+    //"2,1,3,4"
+    fn from_string(s: &String) -> Plan {
+        let mut plan = Plan {
+            up: 0.,
+            left: 0.,
+            width: 0.,
+            height: 0.,
+        };
+        let coords: Vec<&str> = s.split(',').collect();
+        if coords.len() != 4 {
+            println!("Error : invalid Plan format, it must match 'x,y,w,h'.");
+            panic!();
+        } else {
+            plan.up = match coords[0].parse() {
+                Ok(coord) => coord,
+                Err(_)    => {
+                    println!("Error : invalid Plan format, only numbers are accepted.");
+                    panic!();
+                }
+            };
+            plan.left = match coords[1].parse() {
+                Ok(coord) => coord,
+                Err(_)    => {
+                    println!("Error : invalid Plan format, only numbers are accepted.");
+                    panic!();
+                }
+            };
+            plan.width = match coords[2].parse() {
+                Ok(coord) => coord,
+                Err(_)    => {
+                    println!("Error : invalid Plan format, only numbers are accepted.");
+                    panic!();
+                }
+            };
+            plan.height = match coords[3].parse() {
+                Ok(coord) => coord,
+                Err(_)    => {
+                    println!("Error : invalid Plan format, only numbers are accepted.");
+                    panic!();
+                }
+            };
+        }
+        plan
+    }
+}
+
 struct ImageDim {
     width: u32,
     height: u32,
@@ -165,8 +212,13 @@ fn print_help(category: &str) {
     }
 }
 
-fn generate_mandelbrot(_args: Vec<String>) {
-
+fn generate_mandelbrot(args: Vec<String>) {
+    if args.len() != 3 {
+        println!("Error : the `generate` command requires 2 arguments");
+        println!("See `help generate` to get specific help");
+    } else {
+        let _plan = Plan::from_string(&args[1]);
+    }
 }
 
 fn draw_main(_args: Vec<String>) {
