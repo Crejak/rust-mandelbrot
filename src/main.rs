@@ -2,13 +2,24 @@ extern crate sfml;
 extern crate complex;
 
 use sfml::graphics::{Texture, Sprite, RenderWindow, RenderTarget, Image, Color, RectangleShape, Shape, Transformable};
-use sfml::system::{Clock, Time, Vector2f};
+use sfml::system::Vector2f;
 use sfml::window::{ContextSettings, VideoMode, event, window_style, MouseButton};
-use std::ops::Add;
 use complex::*;
-use std::mem::transmute;
+use std::env;
 
 fn main() {
+    let args: Vec<String> = env::args().collect();
+    if args.len() == 0 {
+        print_help("");
+    } else {
+        match &(*args[0]) {
+            "generate" => generate_mandelbrot(args),
+            "draw"     => draw_main(args),
+            _          => print_help(""),
+        }
+    }
+
+
     let mut window = RenderWindow::new(VideoMode::new_init(900, 600, 32),
                                    "Mandelbrot",
                                    window_style::CLOSE,
@@ -139,4 +150,25 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
 
 fn scale(x: i32, y: i32, image_dim: &ImageDim, plan: &Plan) -> c64 {
     c64::new(x as f64 * plan.width / image_dim.width as f64 + plan.left, y as f64 * plan.height / image_dim.height as f64 + plan.up)
+}
+
+fn print_help(category: &str) {
+    match category {
+        _ => {
+            println!("RUST-MANDELBROT : USE");
+            println!("\nYou must specify a command while calling the programm :");
+            println!("\thelp\tPrint this help.");
+            println!("\tgenerate\tGenerate a Mandelbrot set and save it to an image.");
+            println!("\tdraw\tLaunch the interactive drawer.");
+            println!("\nType `help [command]` to get more specific help about a command.");
+        }
+    }
+}
+
+fn generate_mandelbrot(_args: Vec<String>) {
+
+}
+
+fn draw_main(_args: Vec<String>) {
+
 }
