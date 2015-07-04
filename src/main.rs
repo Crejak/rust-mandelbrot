@@ -19,7 +19,8 @@ fn main() {
         }
     }
 
-
+    return;
+    
     let mut window = RenderWindow::new(VideoMode::new_init(900, 600, 32),
                                    "Mandelbrot",
                                    window_style::CLOSE,
@@ -158,6 +159,42 @@ struct ImageDim {
     height: u32,
 }
 
+impl ImageDim {
+    fn from_string(s: &String) -> Option<ImageDim> {
+        if &(*s) == "~" {
+            return Some(ImageDim {
+                width: 900,
+                height: 600,
+            });
+        }
+        let mut img = ImageDim {
+            width: 0,
+            height: 0,
+        };
+        let coords: Vec<&str> = s.split(',').collect();
+        if coords.len() != 4 {
+            println!("Error : invalid Image Dim format, it must match 'w,h'.");
+            return None;
+        } else {
+            img.width = match coords[0].parse() {
+                Ok(coord) => coord,
+                Err(_)    => {
+                    println!("Error : invalid Plan format, only numbers are accepted.");
+                    return None;
+                }
+            };
+            img.height = match coords[1].parse() {
+                Ok(coord) => coord,
+                Err(_)    => {
+                    println!("Error : invalid Plan format, only numbers are accepted.");
+                    return None;
+                }
+            };
+        }
+        Some(img)
+    }
+}
+
 fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_iter: u32) -> Image {
     let mut img = Image::new(image_dim.width, image_dim.height).unwrap();
     let mut non_set_color = Color::new_rgb(0, 0, 0);
@@ -212,11 +249,12 @@ fn print_help(category: &str) {
         "generate" => {
             println!("RUST-MANDELBROT : GENERATE");
             println!("--------------------------");
-            println!("Synopsis : generate [plan] [image] [file]");
+            println!("Synopsis : generate [plan] [image] [max iter] [file]");
             println!("  plan : the frame of the mandelbrot set you want to draw. It must be of the form 'up,left,width,height'. If you want the default settings
                       (that are '-1,-2,3,2'), just type '~'.");
             println!("  image : the image size, in pixels. It must match the following pattern : 'width,height'. If you want the default size (that is '900, 600'),
                       type '~'.");
+            println!("   max iter : the max iterations used to determine the set's points. If you don't know which value you should use, prefer a ");
             println!("  file : the output file to write the image. The format will be guessed from the extension. Supported fromats are : bmp, png, tga and jpg.");
         },
         _ => {
@@ -231,13 +269,42 @@ fn print_help(category: &str) {
 }
 
 fn generate_mandelbrot(args: Vec<String>) {
-    if args.len() != 4 {
+    if args.len() != 5 {
         println!("Error : the `generate` command requires 2 arguments");
         println!("See `help generate` to get specific help");
     } else {
         let option_plan = Plan::from_string(&args[1]);
         if let Some(plan) = option_plan {
-
+            let option_image = ImageDim::from_string(&args[2]);
+            if let Some(image_dim) = option_image {
+                //Dessin :)
+                if let Ok(max_iter) = args[3].parse() {
+                    let mut img = Image::new(image_dim.width, image_dim.height).unwrap();
+                    let set_color = Color::black();
+                    let mut non_set_color = Color::white();
+                    for i in 0..image_dim.width {
+                        for j in 0..image_dim.height {
+                            let c = scale(i as i32, j as i32, &image_dim, &plan);
+                            let mut z = c64::new(0.0, 0.0);
+                            let mut iter = 0;
+                            while z.re()*z.re()+z.im()*z.im() < 4.0 && iter < max_iter {
+                                iter += 1;
+                                z = z*z + c;
+                            }
+                            if iter == max_iter {
+                                img.set_pixel(i, j, &set_color);
+                            } else {
+                                let gradient = (255*iter/max_iter) as u8;
+                                non_set_color.red = gradient;
+                                non_set_color.green = gradient;
+                                non_set_color.blue = gradient;
+                                img.set_pixel(i, j, &non_set_color);
+                            }
+                        }
+                    }
+                    img.save_to_file(&(*args[4]));
+                }
+            }
         }
     }
 }
