@@ -15,6 +15,13 @@ fn main() {
         match &(*args[1]) {
             "generate" => generate_mandelbrot(args),
             "draw"     => draw_main(args),
+            "help"     => {
+                if args.len() >= 3 {
+                    print_help(&(*args[2]));
+                } else {
+                    print_help("");
+                }
+            },
             _          => print_help(""),
         }
     }
@@ -245,21 +252,21 @@ fn scale(x: i32, y: i32, image_dim: &ImageDim, plan: &Plan) -> c64 {
 }
 
 fn print_help(category: &str) {
+    println!("");
     match category {
         "generate" => {
             println!("RUST-MANDELBROT : GENERATE");
-            println!("--------------------------");
-            println!("Synopsis : generate [plan] [image] [max iter] [file]");
-            println!("  plan : the frame of the mandelbrot set you want to draw. It must be of the form 'up,left,width,height'. If you want the default settings
-                      (that are '-1,-2,3,2'), just type '~'.");
-            println!("  image : the image size, in pixels. It must match the following pattern : 'width,height'. If you want the default size (that is '900, 600'),
-                      type '~'.");
-            println!("   max iter : the max iterations used to determine the set's points. If you don't know which value you should use, prefer a ");
+            println!("--------------------------\n");
+            println!("Synopsis : generate [plan] [image] [max iter] [file]\n");
+            println!("  plan : the frame of the mandelbrot set you want to draw. It must be of the form 'up,left,width,height'. If you want the default settings (that are '-1,-2,3,2'), just type '~'.");
+            println!("  image : the image size, in pixels. It must match the following pattern : 'width,height'. If you want the default size (that is '900, 600'), type '~'.");
+            println!("  max iter : the max iterations used to determine the set's points. If you don't know which value you should use, prefer a ");
             println!("  file : the output file to write the image. The format will be guessed from the extension. Supported fromats are : bmp, png, tga and jpg.");
+            println!("--------------------------");
         },
         _ => {
             println!("RUST-MANDELBROT : USE");
-            println!("---------------------\nYou must specify a command while calling the programm :");
+            println!("---------------------\n\nYou must specify a command while calling the programm :");
             println!("  help      Print this help.");
             println!("  generate  Generate a Mandelbrot set and save it to an image.");
             println!("  draw      Launch the interactive drawer.");
