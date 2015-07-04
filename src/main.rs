@@ -9,10 +9,10 @@ use std::env;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() == 0 {
+    if args.len() <= 1 {
         print_help("");
     } else {
-        match &(*args[0]) {
+        match &(*args[1]) {
             "generate" => generate_mandelbrot(args),
             "draw"     => draw_main(args),
             _          => print_help(""),
@@ -20,7 +20,7 @@ fn main() {
     }
 
     return;
-    
+
     let mut window = RenderWindow::new(VideoMode::new_init(900, 600, 32),
                                    "Mandelbrot",
                                    window_style::CLOSE,
@@ -172,7 +172,7 @@ impl ImageDim {
             height: 0,
         };
         let coords: Vec<&str> = s.split(',').collect();
-        if coords.len() != 4 {
+        if coords.len() != 2 {
             println!("Error : invalid Image Dim format, it must match 'w,h'.");
             return None;
         } else {
@@ -269,16 +269,16 @@ fn print_help(category: &str) {
 }
 
 fn generate_mandelbrot(args: Vec<String>) {
-    if args.len() != 5 {
+    if args.len() != 6 {
         println!("Error : the `generate` command requires 2 arguments");
         println!("See `help generate` to get specific help");
     } else {
-        let option_plan = Plan::from_string(&args[1]);
+        let option_plan = Plan::from_string(&args[2]);
         if let Some(plan) = option_plan {
-            let option_image = ImageDim::from_string(&args[2]);
+            let option_image = ImageDim::from_string(&args[3]);
             if let Some(image_dim) = option_image {
                 //Dessin :)
-                if let Ok(max_iter) = args[3].parse() {
+                if let Ok(max_iter) = args[4].parse() {
                     let mut img = Image::new(image_dim.width, image_dim.height).unwrap();
                     let set_color = Color::black();
                     let mut non_set_color = Color::white();
@@ -302,7 +302,7 @@ fn generate_mandelbrot(args: Vec<String>) {
                             }
                         }
                     }
-                    img.save_to_file(&(*args[4]));
+                    img.save_to_file(&(*args[5]));
                 }
             }
         }
