@@ -100,14 +100,14 @@ struct Plan {
 
 impl Plan {
     //"2,1,3,4"
-    fn from_string(s: &String) -> Plan {
+    fn from_string(s: &String) -> Option<Plan> {
         if &(*s) == "~" {
-            return Plan {
+            return Some(Plan {
                 up: -1.,
                 left: -2.,
                 width: 3.,
                 height: 2.,
-            };
+            });
         }
         let mut plan = Plan {
             up: 0.,
@@ -118,38 +118,38 @@ impl Plan {
         let coords: Vec<&str> = s.split(',').collect();
         if coords.len() != 4 {
             println!("Error : invalid Plan format, it must match 'x,y,w,h'.");
-            panic!();
+            return None;
         } else {
             plan.up = match coords[0].parse() {
                 Ok(coord) => coord,
                 Err(_)    => {
                     println!("Error : invalid Plan format, only numbers are accepted.");
-                    panic!();
+                    return None;
                 }
             };
             plan.left = match coords[1].parse() {
                 Ok(coord) => coord,
                 Err(_)    => {
                     println!("Error : invalid Plan format, only numbers are accepted.");
-                    panic!();
+                    return None;
                 }
             };
             plan.width = match coords[2].parse() {
                 Ok(coord) => coord,
                 Err(_)    => {
                     println!("Error : invalid Plan format, only numbers are accepted.");
-                    panic!();
+                    return None;
                 }
             };
             plan.height = match coords[3].parse() {
                 Ok(coord) => coord,
                 Err(_)    => {
                     println!("Error : invalid Plan format, only numbers are accepted.");
-                    panic!();
+                    return None;
                 }
             };
         }
-        plan
+        Some(plan)
     }
 }
 
@@ -235,7 +235,10 @@ fn generate_mandelbrot(args: Vec<String>) {
         println!("Error : the `generate` command requires 2 arguments");
         println!("See `help generate` to get specific help");
     } else {
-        let _plan = Plan::from_string(&args[1]);
+        let option_plan = Plan::from_string(&args[1]);
+        if let Some(plan) = option_plan {
+
+        }
     }
 }
 
