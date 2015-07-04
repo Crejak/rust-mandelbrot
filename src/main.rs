@@ -101,6 +101,14 @@ struct Plan {
 impl Plan {
     //"2,1,3,4"
     fn from_string(s: &String) -> Plan {
+        if &(*s) == "~" {
+            return Plan {
+                up: -1.,
+                left: -2.,
+                width: 3.,
+                height: 2.,
+            };
+        }
         let mut plan = Plan {
             up: 0.,
             left: 0.,
@@ -201,6 +209,16 @@ fn scale(x: i32, y: i32, image_dim: &ImageDim, plan: &Plan) -> c64 {
 
 fn print_help(category: &str) {
     match category {
+        "generate" => {
+            println!("RUST-MANDELBROT : GENERATE");
+            println!("--------------------------");
+            println!("Synopsis : generate [plan] [image] [file]");
+            println!("  plan : the frame of the mandelbrot set you want to draw. It must be of the form 'up,left,width,height'. If you want the default settings
+                      (that are '-1,-2,3,2'), just type '~'.");
+            println!("  image : the image size, in pixels. It must match the following pattern : 'width,height'. If you want the default size (that is '900, 600'),
+                      type '~'.");
+            println!("  file : the output file to write the image. The format will be guessed from the extension. Supported fromats are : bmp, png, tga and jpg.");
+        },
         _ => {
             println!("RUST-MANDELBROT : USE");
             println!("---------------------\nYou must specify a command while calling the programm :");
@@ -213,7 +231,7 @@ fn print_help(category: &str) {
 }
 
 fn generate_mandelbrot(args: Vec<String>) {
-    if args.len() != 3 {
+    if args.len() != 4 {
         println!("Error : the `generate` command requires 2 arguments");
         println!("See `help generate` to get specific help");
     } else {
