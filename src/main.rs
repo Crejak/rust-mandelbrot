@@ -210,6 +210,7 @@ fn print_help(category: &str) {
             println!("  generate  Generate a Mandelbrot set and save it to an image.");
             println!("  draw      Launch the interactive drawer.");
             println!("---------------------\nType `help [command]` to get more specific help about a command.");
+            println!("\nYou don't know about Mandelbrot's set ? Just run with arguments 'draw ? ? 100' :)");
         }
     }
 }
