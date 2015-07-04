@@ -22,3 +22,5 @@ Then install the rust-sfml crate (you can download it from Github, as it isn't a
 ##Use
 
 The main view is the Mandelbrot set in a 2D graph (upper left corner is at -2; 1 and lower right 1; 1). You can zoom in with the mouse (a rectangle shape show you where you want to zoom in), just hit the left button to do so. If you want to get the original view, just hit the right button.
+
+![The original view](./mandelbrot.png "The original view")
