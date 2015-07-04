@@ -156,11 +156,11 @@ fn print_help(category: &str) {
     match category {
         _ => {
             println!("RUST-MANDELBROT : USE");
-            println!("\nYou must specify a command while calling the programm :");
-            println!("\thelp\tPrint this help.");
-            println!("\tgenerate\tGenerate a Mandelbrot set and save it to an image.");
-            println!("\tdraw\tLaunch the interactive drawer.");
-            println!("\nType `help [command]` to get more specific help about a command.");
+            println!("---------------------\nYou must specify a command while calling the programm :");
+            println!("  help      Print this help.");
+            println!("  generate  Generate a Mandelbrot set and save it to an image.");
+            println!("  draw      Launch the interactive drawer.");
+            println!("------------------------------------------\nType `help [command]` to get more specific help about a command.");
         }
     }
 }
