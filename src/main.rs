@@ -39,7 +39,7 @@ struct Plan {
 impl Plan {
     //"2,1,3,4"
     fn from_string(s: &String) -> Option<Plan> {
-        if &(*s) == "~" {
+        if &(*s) == "?" {
             return Some(Plan {
                 up: -1.,
                 left: -2.,
@@ -98,7 +98,7 @@ struct ImageDim {
 
 impl ImageDim {
     fn from_string(s: &String) -> Option<ImageDim> {
-        if &(*s) == "~" {
+        if &(*s) == "?" {
             return Some(ImageDim {
                 width: 900,
                 height: 600,
@@ -188,8 +188,8 @@ fn print_help(category: &str) {
             println!("RUST-MANDELBROT : GENERATE");
             println!("--------------------------\n");
             println!("Synopsis : generate [plan] [image] [max_iter] [file]\n");
-            println!("  plan     : the frame of the mandelbrot set you want to draw. It must be of the form 'up,left,width,height'. If you want the default settings (that are '-1,-2,3,2'), just type '~'.");
-            println!("  image    : the image size, in pixels. It must match the following pattern : 'width,height'. If you want the default size (that is '900, 600'), type '~'.");
+            println!("  plan     : the frame of the mandelbrot set you want to draw. It must be of the form 'up,left,width,height'. If you want the default settings (that are '-1,-2,3,2'), just type '?'.");
+            println!("  image    : the image size, in pixels. It must match the following pattern : 'width,height'. If you want the default size (that is '900, 600'), type '?'.");
             println!("  max_iter : the max iterations used to determine the set's points. If you don't know which value you should use, prefer a number around 100.");
             println!("  file     : the output file to write the image. The format will be guessed from the extension. Supported fromats are : bmp, png, tga and jpg.");
             println!("--------------------------");
@@ -198,8 +198,8 @@ fn print_help(category: &str) {
             println!("RUST-MANDELBROT : DRAW");
             println!("----------------------\n");
             println!("Synopsis : draw [plan] [window] [max_iter]\n");
-            println!("  plan     : the frame of the mandelbrot set you want to use as default view. When you will right-click, it will bring you to this view. It must be of the form 'up,left,width,height'. If you want the default settings (that are '-1,-2,3,2'), just type '~'.");
-            println!("  window   : the size of the window, in pixels. It must match the following pattern : 'width,height'. If you want the default size (that is '900, 600'), type '~'.");
+            println!("  plan     : the frame of the mandelbrot set you want to use as default view. When you will right-click, it will bring you to this view. It must be of the form 'up,left,width,height'. If you want the default settings (that are '-1,-2,3,2'), just type '?'.");
+            println!("  window   : the size of the window, in pixels. It must match the following pattern : 'width,height'. If you want the default size (that is '900, 600'), type '?'.");
             println!("  max_iter : the max iterations used to determine the set's points. If you don't know which value you should use, prefer a number around 100.");
             println!("--------------------------");
         }
