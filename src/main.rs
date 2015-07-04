@@ -322,7 +322,7 @@ fn draw_main(args: Vec<String>) {
                             img = draw_mandelbrot(&Color::new_rgb(0, 0, 0),
                                             &plan,
                                             &image_dim,
-                                            max_iter*zoom_lvl+60);
+                                            max_iter*(zoom_lvl+1));
                             tex = Texture::new_from_image(&img).unwrap();
                             redraw = false;
                         }
