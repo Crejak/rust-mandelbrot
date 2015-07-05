@@ -6,6 +6,7 @@ use sfml::system::Vector2f;
 use sfml::window::{ContextSettings, VideoMode, event, window_style, MouseButton};
 use complex::*;
 use std::env;
+use std::mem::transmute;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -150,18 +151,6 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
             if iter == max_iter {
                 img.set_pixel(i, j, &set_color);
             } else {
-                /*non_set_color = Color::new_rgb(0, 0, 0);
-                let gradient = (2* 255 * iter / max_iter) as u32;
-                /*let gradient = unsafe { transmute::<u32, [u8; 4]>(gradient) };
-                non_set_color.red = gradient[0];
-                non_set_color.green = gradient[0];
-                non_set_color.blue = gradient[0];*/
-                if gradient > 255 {
-                    non_set_color.red = (gradient-255) as u8;
-                    non_set_color.green = non_set_color.red / 2;
-                } else {
-                    non_set_color.blue = gradient as u8;
-                }*/
                 let gradient = (255*iter/max_iter) as u8;
                 non_set_color.red = gradient;
                 non_set_color.green = gradient;
