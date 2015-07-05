@@ -6,7 +6,7 @@ use sfml::system::Vector2f;
 use sfml::window::{ContextSettings, VideoMode, event, window_style, MouseButton};
 use complex::*;
 use std::env;
-use std::mem::transmute;
+//use std::mem::transmute;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -130,6 +130,39 @@ impl ImageDim {
             };
         }
         Some(img)
+    }
+}
+
+#[derive(Debug)]
+struct PixelArrayBuffer {
+    buffer: Vec<u8>,
+    width: usize,
+    height: usize,
+}
+
+impl PixelArrayBuffer {
+    fn with_size(width: usize, height: usize) -> PixelArrayBuffer {
+        PixelArrayBuffer {
+            buffer : vec![0; width*height*4],
+            width: width,
+            height: height,
+        }
+    }
+
+    fn at(&self, x: usize, y: usize) -> Color {
+        let color_index = 4*(x*self.height + y);
+        Color::new_rgb(
+            self.buffer[color_index],
+            self.buffer[color_index+1],
+            self.buffer[color_index+2]
+        )
+    }
+
+    fn set(&mut self, x: usize, y: usize, color: &Color) {
+        let color_index = 4*(x*self.height + y);
+        self.buffer[color_index] = color.red;
+        self.buffer[color_index+1] = color.green;
+        self.buffer[color_index+2] = color.blue;
     }
 }
 
