@@ -152,21 +152,21 @@ impl PixelArrayBuffer {
         }
     }
 
-    fn at(&self, x: usize, y: usize) -> Color {
+    /*fn at(&self, x: usize, y: usize) -> Color {
         let color_index = 4*(x*self.height + y);
         Color::new_rgb(
             self.buffer[color_index],
             self.buffer[color_index+1],
             self.buffer[color_index+2]
         )
-    }
+    }*/
 
     fn get(&self) -> &[u8] {
         &self.buffer
     }
 
     fn set(&mut self, x: usize, y: usize, color: &Color) {
-        let color_index = 4*(x*self.height + y);
+        let color_index = 4*(y*self.width + x);
         self.buffer[color_index] = color.red;
         self.buffer[color_index+1] = color.green;
         self.buffer[color_index+2] = color.blue;
