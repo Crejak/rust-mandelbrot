@@ -48,7 +48,7 @@ Like the generate command, default arguments exist :
 
 ##TODO
 
-*Optimizations on the draw / generate algorithm
-*Use colors to make the set more beautiful :)
-*Authorize to change the window's size
-*Make a 'zoom out' feature
+- Optimizations on the draw / generate algorithm
+- Use colors to make the set more beautiful :)
+- Authorize to change the window's size
+- Make a 'zoom out' feature
