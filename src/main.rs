@@ -138,7 +138,6 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
     let mut non_set_color = Color::new_rgb(0, 0, 0);
     //println!("0, 0 : {:?}", scale(0, 0, &image_dim, &plan));
     //println!("{}, {} : {:?}", image_dim.width-1, image_dim.height-1, scale(image_dim.width-1, image_dim.height-1, &image_dim, &plan));
-    let mut percent = 0;
     for i in 0..image_dim.width {
         for j in 0..image_dim.height {
             let c = scale(i as i32, j as i32, &image_dim, &plan);
@@ -173,10 +172,6 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
                 non_set_color.blue = gradient;*/
                 img.set_pixel(i, j, &non_set_color);
             }
-        }
-        let cur = 100*i/image_dim.width;
-        if cur-percent >= 1 {
-            percent = cur;
         }
     }
     img
