@@ -26,16 +26,22 @@ You can use rust-mandelbrot with two commands :
 ###generate
 
 The `generate` command create a Mandelbrot Set into an image file, using the Image SFML object. The command takes 4 arguments : the panel of the Set you want to render, the image dimensions, the max iterations to compute the Set's points and the path of the image file.
+
     $ rust-mandelbrot generate -1,-2,3,2 900,600 100 mandelbrot.png
+
 Notice that default settings are built-in :
+
     $ rust-mandelbrot generate ? ? 100 mandelbrot.png
 
 ###draw
 
 The `draw` command launch the interactive Set Viewer. It starts with a specific frame of the Mandelbrot Set (which you precise in the command arguments), and then you can zoom-in with the mouse (left-click). You can also go back to the original view with the right-click.
 Like the `generate` command, the `draw` command takes a few arguments : the frame of the original view, the image dimensions and the max iterations :
+
     $ rust-mandelbrot draw -1,-2,3,2 900,600 100
+
 Like the generate command, default arguments exist :
+
     $ rust-mandelbrot draw ? ? 100
 
 ![The original view](./mandelbrot.png "The original view")
