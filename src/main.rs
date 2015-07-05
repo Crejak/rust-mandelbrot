@@ -404,46 +404,186 @@ fn generate_mandelbrot(args: Vec<String>) {
             if let Some(image_dim) = option_image {
                 //Dessin :)
                 if let Ok(max_iter) = args[4].parse() {
-                    let mut img = Image::new(image_dim.width as u32, image_dim.height as u32).unwrap();
-                    let set_color = Color::black();
-                    let mut non_set_color = Color::white();
-                    for i in 0..image_dim.width {
-                        for j in 0..image_dim.height {
-                            let c = scale(i as i32, j as i32, &image_dim, &plan);
-                            let mut z = c64::new(0.0, 0.0);
-                            let mut iter = 0;
-                            while z.re()*z.re()+z.im()*z.im() < 4.0 && iter < max_iter {
-                                iter += 1;
-                                z = z*z + c;
-                            }
-                            if iter == max_iter {
-                                img.set_pixel(i as u32, j as u32, &set_color);
-                            } else {
-                                let ratio = iter as f32/max_iter as f32;
-                                if ratio > 0.666 {
-                                    let gradient = (255.*ratio) as u8;
-                                    non_set_color.red   = 255;
-                                    non_set_color.green = 255-gradient;
-                                    non_set_color.blue  = 0;
-                                } else if ratio > 0.333 {
-                                    let gradient = (3.*255.*(ratio-0.333)) as u8;
-                                    non_set_color.red   = gradient;
-                                    non_set_color.green = gradient;
-                                    non_set_color.blue  = 255-gradient;
-                                } else {
-                                    let gradient = (3.*255.*ratio) as u8;
-                                    non_set_color.red   = 0;
-                                    non_set_color.green = 0;
-                                    non_set_color.blue  = gradient;
+                    let set_color = Color::new_rgb(0, 0, 0);
+                    let mut pixel_buffer = Arc::new(Mutex::new(PixelArrayBuffer::with_size(image_dim.width, image_dim.height)));
+
+                    let half_width = image_dim.width/2;
+                    let half_height = image_dim.height/2;
+
+                    let dim_1 = image_dim.clone();
+                    let plan_1 = plan.clone();
+                    let set_color_1 = set_color;
+                    let buffer_1 = pixel_buffer.clone();
+                    let quarter_1 = thread::spawn(move || {
+                        let mut non_set_color = Color::new_rgb(0, 0, 0);
+                        for i in 0..half_width {
+                            for j in 0..half_height {
+                                let c = scale(i as i32, j as i32, &dim_1, &plan_1);
+                                let mut z = c64::new(0.0, 0.0);
+                                let mut iter = 0;
+                                while z.re()*z.re()+z.im()*z.im() < 4.0 && iter < max_iter {
+                                    iter += 1;
+                                    z = z*z + c;
                                 }
-                                /*let gradient = (255*iter/max_iter) as u8;
-                                non_set_color.red = gradient;
-                                non_set_color.green = gradient;
-                                non_set_color.blue = gradient;*/
-                                img.set_pixel(i as u32, j as u32, &non_set_color);
+                                let mut pixel_buffer = buffer_1.lock().unwrap();
+                                if iter == max_iter {
+                                    pixel_buffer.set(i, j, &set_color_1);
+                                } else {
+                                    let ratio = iter as f32/max_iter as f32;
+                                    if ratio > 0.666 {
+                                        let gradient = (255.*ratio) as u8;
+                                        non_set_color.red   = 255;
+                                        non_set_color.green = 255-gradient;
+                                        non_set_color.blue  = 0;
+                                    } else if ratio > 0.333 {
+                                        let gradient = (3.*255.*(ratio-0.333)) as u8;
+                                        non_set_color.red   = gradient;
+                                        non_set_color.green = gradient;
+                                        non_set_color.blue  = 255-gradient;
+                                    } else {
+                                        let gradient = (3.*255.*ratio) as u8;
+                                        non_set_color.red   = 0;
+                                        non_set_color.green = 0;
+                                        non_set_color.blue  = gradient;
+                                    }
+                                    pixel_buffer.set(i, j, &non_set_color);
+                                }
                             }
                         }
-                    }
+                    });
+
+                    let dim_2 = image_dim.clone();
+                    let plan_2 = plan.clone();
+                    let set_color_2 = set_color;
+                    let buffer_2 = pixel_buffer.clone();
+                    let quarter_2 = thread::spawn(move || {
+                        let mut non_set_color = Color::new_rgb(0, 0, 0);
+                        for i in half_width..dim_2.width {
+                            for j in 0..half_height {
+                                let c = scale(i as i32, j as i32, &dim_2, &plan_2);
+                                let mut z = c64::new(0.0, 0.0);
+                                let mut iter = 0;
+                                while z.re()*z.re()+z.im()*z.im() < 4.0 && iter < max_iter {
+                                    iter += 1;
+                                    z = z*z + c;
+                                }
+                                let mut pixel_buffer = buffer_2.lock().unwrap();
+                                if iter == max_iter {
+                                    pixel_buffer.set(i, j, &set_color_2);
+                                } else {
+                                    let ratio = iter as f32/max_iter as f32;
+                                    if ratio > 0.666 {
+                                        let gradient = (255.*ratio) as u8;
+                                        non_set_color.red   = 255;
+                                        non_set_color.green = 255-gradient;
+                                        non_set_color.blue  = 0;
+                                    } else if ratio > 0.333 {
+                                        let gradient = (3.*255.*(ratio-0.333)) as u8;
+                                        non_set_color.red   = gradient;
+                                        non_set_color.green = gradient;
+                                        non_set_color.blue  = 255-gradient;
+                                    } else {
+                                        let gradient = (3.*255.*ratio) as u8;
+                                        non_set_color.red   = 0;
+                                        non_set_color.green = 0;
+                                        non_set_color.blue  = gradient;
+                                    }
+                                    pixel_buffer.set(i, j, &non_set_color);
+                                }
+                            }
+                        }
+                    });
+
+                    let dim_3 = image_dim.clone();
+                    let plan_3 = plan.clone();
+                    let set_color_3 = set_color;
+                    let buffer_3 = pixel_buffer.clone();
+                    let quarter_3 = thread::spawn(move || {
+                        let mut non_set_color = Color::new_rgb(0, 0, 0);
+                        for i in 0..half_width {
+                            for j in half_height..dim_3.height {
+                                let c = scale(i as i32, j as i32, &dim_3, &plan_3);
+                                let mut z = c64::new(0.0, 0.0);
+                                let mut iter = 0;
+                                while z.re()*z.re()+z.im()*z.im() < 4.0 && iter < max_iter {
+                                    iter += 1;
+                                    z = z*z + c;
+                                }
+                                let mut pixel_buffer = buffer_3.lock().unwrap();
+                                if iter == max_iter {
+                                    pixel_buffer.set(i, j, &set_color_3);
+                                } else {
+                                    let ratio = iter as f32/max_iter as f32;
+                                    if ratio > 0.666 {
+                                        let gradient = (255.*ratio) as u8;
+                                        non_set_color.red   = 255;
+                                        non_set_color.green = 255-gradient;
+                                        non_set_color.blue  = 0;
+                                    } else if ratio > 0.333 {
+                                        let gradient = (3.*255.*(ratio-0.333)) as u8;
+                                        non_set_color.red   = gradient;
+                                        non_set_color.green = gradient;
+                                        non_set_color.blue  = 255-gradient;
+                                    } else {
+                                        let gradient = (3.*255.*ratio) as u8;
+                                        non_set_color.red   = 0;
+                                        non_set_color.green = 0;
+                                        non_set_color.blue  = gradient;
+                                    }
+                                    pixel_buffer.set(i, j, &non_set_color);
+                                }
+                            }
+                        }
+                    });
+
+                    let dim_4 = image_dim.clone();
+                    let plan_4 = plan.clone();
+                    let set_color_4 = set_color;
+                    let buffer_4 = pixel_buffer.clone();
+                    let quarter_4 = thread::spawn(move || {
+                        let mut non_set_color = Color::new_rgb(0, 0, 0);
+                        for i in half_width..dim_4.width {
+                            for j in half_height..dim_4.height {
+                                let c = scale(i as i32, j as i32, &dim_4, &plan_4);
+                                let mut z = c64::new(0.0, 0.0);
+                                let mut iter = 0;
+                                while z.re()*z.re()+z.im()*z.im() < 4.0 && iter < max_iter {
+                                    iter += 1;
+                                    z = z*z + c;
+                                }
+                                let mut pixel_buffer = buffer_4.lock().unwrap();
+                                if iter == max_iter {
+                                    pixel_buffer.set(i, j, &set_color_4);
+                                } else {
+                                    let ratio = iter as f32/max_iter as f32;
+                                    if ratio > 0.666 {
+                                        let gradient = (255.*ratio) as u8;
+                                        non_set_color.red   = 255;
+                                        non_set_color.green = 255-gradient;
+                                        non_set_color.blue  = 0;
+                                    } else if ratio > 0.333 {
+                                        let gradient = (3.*255.*(ratio-0.333)) as u8;
+                                        non_set_color.red   = gradient;
+                                        non_set_color.green = gradient;
+                                        non_set_color.blue  = 255-gradient;
+                                    } else {
+                                        let gradient = (3.*255.*ratio) as u8;
+                                        non_set_color.red   = 0;
+                                        non_set_color.green = 0;
+                                        non_set_color.blue  = gradient;
+                                    }
+                                    pixel_buffer.set(i, j, &non_set_color);
+                                }
+                            }
+                        }
+                    });
+
+                    quarter_1.join().unwrap();
+                    quarter_2.join().unwrap();
+                    quarter_3.join().unwrap();
+                    quarter_4.join().unwrap();
+                    let pixel_buffer = pixel_buffer.lock().unwrap();
+                    let img = Image::create_from_pixels(pixel_buffer.width as u32, pixel_buffer.height as u32, pixel_buffer.get()).unwrap();
                     img.save_to_file(&(*args[5]));
                 }
             }
