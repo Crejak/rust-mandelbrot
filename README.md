@@ -21,6 +21,28 @@ Then install the rust-sfml crate (you can download it from Github, as it isn't a
 
 ##Use
 
-The main view is the Mandelbrot set in a 2D graph (upper left corner is at -2; 1 and lower right 1; 1). You can zoom in with the mouse (a rectangle shape show you where you want to zoom in), just hit the left button to do so. If you want to get the original view, just hit the right button.
+You can use rust-mandelbrot with two commands :
+
+###generate
+
+The `generate` command create a Mandelbrot Set into an image file, using the Image SFML object. The command takes 4 arguments : the panel of the Set you want to render, the image dimensions, the max iterations to compute the Set's points and the path of the image file.
+    $ rust-mandelbrot generate -1,-2,3,2 900,600 100 mandelbrot.png
+Notice that default settings are built-in :
+    $ rust-mandelbrot generate ? ? 100 mandelbrot.png
+
+###draw
+
+The `draw` command launch the interactive Set Viewer. It starts with a specific frame of the Mandelbrot Set (which you precise in the command arguments), and then you can zoom-in with the mouse (left-click). You can also go back to the original view with the right-click.
+Like the `generate` command, the `draw` command takes a few arguments : the frame of the original view, the image dimensions and the max iterations :
+    $ rust-mandelbrot draw -1,-2,3,2 900,600 100
+Like the generate command, default arguments exist :
+    $ rust-mandelbrot draw ? ? 100
 
 ![The original view](./mandelbrot.png "The original view")
+
+##TODO
+
+*Optimizations on the draw / generate algorithm
+*Use colors to make the set more beautiful :)
+*Authorize to change the window's size
+*Make a 'zoom out' feature
