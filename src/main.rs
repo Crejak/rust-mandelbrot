@@ -146,7 +146,7 @@ struct PixelArrayBuffer {
 impl PixelArrayBuffer {
     fn with_size(width: usize, height: usize) -> PixelArrayBuffer {
         PixelArrayBuffer {
-            buffer : vec![0; width*height*4],
+            buffer : vec![255; width*height*4],
             width: width,
             height: height,
         }
@@ -364,9 +364,7 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
     quarter_3.join().unwrap();
     quarter_4.join().unwrap();
     let pixel_buffer = pixel_buffer.lock().unwrap();
-    println!("Fini : pixel 0; 0 : {:?}; pixel 300; 108 {:?}", pixel_buffer.at(0, 0), pixel_buffer.at(300, 108));
-    //let img = Image::create_from_pixels(pixel_buffer.width as u32, pixel_buffer.height as u32, pixel_buffer.get()).unwrap();
-    let img = Image::create_from_pixels(2, 2, &[0, 0, 255, 255, 0, 255, 255, 255, 255, 255, 0, 255, 255, 0, 0, 255]).unwrap();
+    let img = Image::create_from_pixels(pixel_buffer.width as u32, pixel_buffer.height as u32, pixel_buffer.get()).unwrap();
     img
 }
 
