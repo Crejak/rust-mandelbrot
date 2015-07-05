@@ -215,9 +215,6 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
                         non_set_color.green = 0;
                         non_set_color.blue  = gradient;
                     }
-                    /*non_set_color.red = gradient;
-                    non_set_color.green = gradient;
-                    non_set_color.blue = gradient;*/
                     pixel_buffer.set(i, j, &non_set_color);
                 }
             }
@@ -260,9 +257,6 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
                         non_set_color.green = 0;
                         non_set_color.blue  = gradient;
                     }
-                    /*non_set_color.red = gradient;
-                    non_set_color.green = gradient;
-                    non_set_color.blue = gradient;*/
                     pixel_buffer.set(i, j, &non_set_color);
                 }
             }
@@ -305,9 +299,6 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
                         non_set_color.green = 0;
                         non_set_color.blue  = gradient;
                     }
-                    /*non_set_color.red = gradient;
-                    non_set_color.green = gradient;
-                    non_set_color.blue = gradient;*/
                     pixel_buffer.set(i, j, &non_set_color);
                 }
             }
@@ -350,9 +341,6 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
                         non_set_color.green = 0;
                         non_set_color.blue  = gradient;
                     }
-                    /*non_set_color.red = gradient;
-                    non_set_color.green = gradient;
-                    non_set_color.blue = gradient;*/
                     pixel_buffer.set(i, j, &non_set_color);
                 }
             }
@@ -364,8 +352,7 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
     quarter_3.join().unwrap();
     quarter_4.join().unwrap();
     let pixel_buffer = pixel_buffer.lock().unwrap();
-    let img = Image::create_from_pixels(pixel_buffer.width as u32, pixel_buffer.height as u32, pixel_buffer.get()).unwrap();
-    img
+    Image::create_from_pixels(pixel_buffer.width as u32, pixel_buffer.height as u32, pixel_buffer.get()).unwrap()
 }
 
 fn scale(x: i32, y: i32, image_dim: &ImageDim, plan: &Plan) -> c64 {
