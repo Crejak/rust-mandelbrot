@@ -291,30 +291,30 @@ fn draw_main(args: Vec<String>) {
                     while window.is_open() {
                         for event in window.events() {
                             match event {
-                                event::Closed               => window.close(),
+                                event::Closed => window.close(),
                                 event::MouseButtonPressed {
                                     button, x, y
-                                }                           => {
-                                                                   if button == MouseButton::Right {
-                                                                       zoom_lvl = 0;
-                                                                       redraw = true;
-                                                                       plan = Plan {up: -1.0, left: -2.0, width: 3.0, height: 2.0}; //valeurs par défaut
-                                                                   } else if button == MouseButton::Left {
-                                                                       redraw = true;
-                                                                       //zoom sur un rectangle de 90*60 centré sur la souris
-                                                                       let left = x - 45;
-                                                                       let up = y - 30;
-                                                                       let up_left = scale(left, up, &image_dim, &plan);
-                                                                       let width_height = scale(90, 60, &image_dim, &Plan {up: 0., left: 0., width: plan.width, height: plan.height});
-                                                                       plan = Plan {up: up_left.im(), left: up_left.re(), width: width_height.re(), height: width_height.im()};
-                                                                       zoom_lvl += 1;
-                                                                       println!("ZOOM: {} sur ({:.5}; {:.5})", zoom_lvl, plan.left+plan.width/2., plan.up+plan.height/2.);
-                                                                   }
-                                                               },
+                                } => {
+                                        if button == MouseButton::Right {
+                                            zoom_lvl = 0;
+                                            redraw = true;
+                                            plan = Plan {up: -1.0, left: -2.0, width: 3.0, height: 2.0}; //valeurs par défaut
+                                        } else if button == MouseButton::Left {
+                                            redraw = true;
+                                            //zoom sur un rectangle de 90*60 centré sur la souris
+                                            let left = x - 45;
+                                            let up = y - 30;
+                                            let up_left = scale(left, up, &image_dim, &plan);
+                                            let width_height = scale(90, 60, &image_dim, &Plan {up: 0., left: 0., width: plan.width, height: plan.height});
+                                            plan = Plan {up: up_left.im(), left: up_left.re(), width: width_height.re(), height: width_height.im()};
+                                            zoom_lvl += 1;
+                                            println!("ZOOM: {} sur ({:.5}; {:.5})", zoom_lvl, plan.left+plan.width/2., plan.up+plan.height/2.);
+                                        }
+                                    },
                                 event::MouseMoved {
                                     x, y
-                                }                           => rect.set_position(&Vector2f::new(x as f32, y as f32)),
-                                _                           => {},
+                                } => rect.set_position(&Vector2f::new(x as f32, y as f32)),
+                                _ => {},
                             }
                         }
 
