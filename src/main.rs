@@ -257,7 +257,7 @@ fn draw_main(args: Vec<String>) {
             if let Some(mut image_dim) = option_image {
                 //Dessin :)
                 if let Ok(mut max_iter) = args[4].parse::<u32>() {
-                    let mut window = RenderWindow::new(VideoMode::new_init(900, 600, 32),
+                    let mut window = RenderWindow::new(VideoMode::new_init(image_dim.width, image_dim.height, 32),
                                                    "Mandelbrot",
                                                    window_style::CLOSE,
                                                    &ContextSettings::default()).expect("Couldn't create RenderWindow");
