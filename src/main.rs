@@ -151,10 +151,26 @@ fn draw_mandelbrot(set_color: &Color, plan: &Plan, image_dim: &ImageDim, max_ite
             if iter == max_iter {
                 img.set_pixel(i, j, &set_color);
             } else {
-                let gradient = (255*iter/max_iter) as u8;
-                non_set_color.red = gradient;
+                let ratio = iter as f32/max_iter as f32;
+                if ratio > 0.666 {
+                    let gradient = (255.*ratio) as u8;
+                    non_set_color.red   = 255;
+                    non_set_color.green = 255-gradient;
+                    non_set_color.blue  = 0;
+                } else if ratio > 0.333 {
+                    let gradient = (3.*255.*(ratio-0.333)) as u8;
+                    non_set_color.red   = gradient;
+                    non_set_color.green = gradient;
+                    non_set_color.blue  = 255-gradient;
+                } else {
+                    let gradient = (3.*255.*ratio) as u8;
+                    non_set_color.red   = 0;
+                    non_set_color.green = 0;
+                    non_set_color.blue  = gradient;
+                }
+                /*non_set_color.red = gradient;
                 non_set_color.green = gradient;
-                non_set_color.blue = gradient;
+                non_set_color.blue = gradient;*/
                 img.set_pixel(i, j, &non_set_color);
             }
         }
@@ -230,10 +246,27 @@ fn generate_mandelbrot(args: Vec<String>) {
                             if iter == max_iter {
                                 img.set_pixel(i, j, &set_color);
                             } else {
-                                let gradient = (255*iter/max_iter) as u8;
+                                let ratio = iter as f32/max_iter as f32;
+                                if ratio > 0.666 {
+                                    let gradient = (255.*ratio) as u8;
+                                    non_set_color.red   = 255;
+                                    non_set_color.green = 255-gradient;
+                                    non_set_color.blue  = 0;
+                                } else if ratio > 0.333 {
+                                    let gradient = (3.*255.*(ratio-0.333)) as u8;
+                                    non_set_color.red   = gradient;
+                                    non_set_color.green = gradient;
+                                    non_set_color.blue  = 255-gradient;
+                                } else {
+                                    let gradient = (3.*255.*ratio) as u8;
+                                    non_set_color.red   = 0;
+                                    non_set_color.green = 0;
+                                    non_set_color.blue  = gradient;
+                                }
+                                /*let gradient = (255*iter/max_iter) as u8;
                                 non_set_color.red = gradient;
                                 non_set_color.green = gradient;
-                                non_set_color.blue = gradient;
+                                non_set_color.blue = gradient;*/
                                 img.set_pixel(i, j, &non_set_color);
                             }
                         }
