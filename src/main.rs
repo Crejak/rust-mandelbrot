@@ -3,8 +3,9 @@ extern crate complex;
 
 use sfml::graphics::{Texture, Sprite, RenderWindow, RenderTarget, Image, Color, RectangleShape, Shape, Transformable};
 use sfml::system::Vector2f;
-use sfml::window::{ContextSettings, VideoMode, event, window_style};
+use sfml::window::{ContextSettings, VideoMode, event};
 use sfml::window::mouse::MouseButton;
+use sfml::window::WindowStyle;
 use complex::*;
 use std::env;
 use std::sync::{Arc, Mutex};
@@ -606,7 +607,7 @@ fn draw_main(args: Vec<String>) {
                 if let Ok(mut max_iter) = args[4].parse::<u32>() {
                     let mut window = RenderWindow::new(VideoMode::new_init(image_dim.width as u32, image_dim.height as u32, 32),
                                                    "Mandelbrot",
-                                                   window_style::CLOSE,
+                                                   WindowStyle::Close,
                                                    &ContextSettings::default()).expect("Couldn't create RenderWindow");
                     window.set_framerate_limit(30);
 
@@ -631,11 +632,11 @@ fn draw_main(args: Vec<String>) {
                                 event::MouseButtonPressed {
                                     button, x, y
                                 } => {
-                                        if button == MouseButton::Right {
+                                        if button == MouseButton::MouseRight {
                                             zoom_lvl = 0;
                                             redraw = true;
                                             plan = Plan {up: -1.0, left: -2.0, width: 3.0, height: 2.0}; //valeurs par défaut
-                                        } else if button == MouseButton::Left {
+                                        } else if button == MouseButton::MouseLeft {
                                             redraw = true;
                                             //zoom sur un rectangle de 90*60 centré sur la souris
                                             let left = x - 45;
