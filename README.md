@@ -10,7 +10,6 @@ Works on Linux 64bits (only tested on Debian Jessie - amd64), but it should work
 
 Make sure you've installed SFML and CSFML 2.0 (available on [sfml-dev.org](sfml-dev.org)).
 You should also install the latest rustc and Cargo version ([rust-sfml.org](rust-sfml.org)).
-Then install the rust-sfml crate (you can download it from Github, as it isn't available on [crates.io](crates.io) for the moment).
 
 ###Download and install
 
