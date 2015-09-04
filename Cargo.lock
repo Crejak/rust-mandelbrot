@@ -3,13 +3,8 @@ name = "mandelbrot"
 version = "0.1.0"
 dependencies = [
  "complex 0.7.5 (registry+https://github.com/rust-lang/crates.io-index)",
- "sfml 0.9.3",
+ "sfml 0.9.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
-
-[[package]]
-name = "bitflags"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "complex"
@@ -32,8 +27,8 @@ dependencies = [
 [[package]]
 name = "sfml"
 version = "0.9.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "bitflags 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.1.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand 0.3.8 (registry+https://github.com/rust-lang/crates.io-index)",
 ]

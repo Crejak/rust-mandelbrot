@@ -3,8 +3,6 @@ name = "mandelbrot"
 version = "0.1.0"
 authors = ["valentin <valentin.rigolle@gmail.com>"]
 
-[dependencies.sfml]
-path="/usr/local/lib/rust-sfml"
-
 [dependencies]
 complex = "*"
+sfml = "*"
