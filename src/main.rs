@@ -3,7 +3,8 @@ extern crate complex;
 
 use sfml::graphics::{Texture, Sprite, RenderWindow, RenderTarget, Image, Color, RectangleShape, Shape, Transformable};
 use sfml::system::Vector2f;
-use sfml::window::{ContextSettings, VideoMode, event, window_style, MouseButton};
+use sfml::window::{ContextSettings, VideoMode, event, window_style};
+use sfml::window::mouse::MouseButton;
 use complex::*;
 use std::env;
 use std::sync::{Arc, Mutex};
